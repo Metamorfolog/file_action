@@ -70,20 +70,22 @@ public class ImageToSvgTests : IDisposable
     }
 
     [Fact]
-    public async Task Edges_of_black_text_do_not_take_a_colour_from_elsewhere_in_the_picture()
+    public async Task Edges_of_black_shapes_do_not_take_a_colour_from_elsewhere_in_the_picture()
     {
         var path = Path.Combine(_dir, "text.png");
         using (var image = new MagickImage(MagickColors.White, 500, 300))
         {
             new Drawables()
                 .FillColor(new MagickColor("#118833")).Rectangle(380, 20, 480, 120)
-                .FontPointSize(70).FillColor(MagickColors.Black).Text(20, 200, "Logo")
+                // Black shapes with grey anti-aliased edges; no text, the build servers may have no font for it.
+                .FillColor(MagickColors.Black).Circle(110, 170, 110, 90)
+                .Polygon(new PointD(230, 250), new PointD(300, 60), new PointD(340, 250))
                 .Draw(image);
             image.Write(path);
         }
         var (svg, root) = await Convert(path);
         var green = root.Elements(Svg + "path").Single(p => p.Attribute("fill")!.Value.StartsWith("#11"));
-        // Only the square: four sides, not the outlines of the letters as well.
+        // Only the square: four sides, not the outlines of the black shapes as well.
         Assert.True(green.Attribute("d")!.Value.Length < 200, green.Attribute("d")!.Value);
         Assert.True(Difference(path, svg) < 0.06, $"difference {Difference(path, svg)}");
     }
