@@ -37,6 +37,9 @@ public static class Catalog
                 async (item, ctx, _) => [await Produce(item, ctx, target, tmp => ImageBackend.ConvertAsync(item.Path, tmp, target, ctx.Settings, ctx.CancellationToken))],
                 targetFormat: target, subtitle: target == "pdf" ? T("dokument", "document") : null));
         }
+        ops.Add(new PerFileOperation("image.to.svg", WheelKind.Convert, "SVG", Glyphs.Photo, Formats.Images,
+            async (item, ctx, _) => [await Produce(item, ctx, "svg", tmp => ImageBackend.ToSvgAsync(item.Path, tmp, ctx.CancellationToken))],
+            targetFormat: "svg", subtitle: T("vektor", "vector")));
         ops.Add(new PerFileOperation("gif.to.mp4", WheelKind.Convert, "MP4", Glyphs.Video, ["gif"],
             async (item, ctx, p) => [await FfmpegBackend.ConvertAsync(item, "mp4", ctx, p)], subtitle: "video")
         { Requires = [ExternalTool.Ffmpeg] });

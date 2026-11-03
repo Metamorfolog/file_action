@@ -49,7 +49,7 @@ Progress shows up in the corner of the screen, where you can open the result, sh
 
 | Type | From | To |
 |---|---|---|
-| Images | JPG, PNG, WebP, HEIC, TIFF, AVIF, BMP, GIF, ICO, SVG | JPG, PNG, WebP, AVIF, TIFF, ICO, PDF (GIF → MP4/WebM) |
+| Images | JPG, PNG, WebP, HEIC, TIFF, AVIF, BMP, GIF, ICO, SVG | JPG, PNG, WebP, AVIF, TIFF, ICO, PDF, SVG (real vector shapes, best for logos and drawings) (GIF → MP4/WebM) |
 | Audio | MP3, M4A, AAC, WAV, FLAC, OGG, Opus, AIFF, WMA | MP3, M4A, WAV, FLAC, OGG, Opus, AIFF |
 | Video | MP4, MOV, MKV, WebM, AVI, WMV, FLV, MPG, 3GP, TS | MP4, MOV, MKV, WebM, GIF, MP3 |
 | PDF | PDF | DOCX, XLSX (tables), JPG, PNG (all pages, 300 DPI), PPTX, TXT, MD, HTML, EPUB |

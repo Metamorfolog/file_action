@@ -280,6 +280,39 @@ public static class ImageBackend
         image.Strip();
     }
 
+    /// <summary>
+    /// Vectorises a picture (the first frame of an animation) into SVG shapes. Made for logos, icons and drawings;
+    /// a photo comes out as a poster with flat areas of colour.
+    /// </summary>
+    public static Task ToSvgAsync(string input, string output, CancellationToken ct) =>
+        Task.Run(() =>
+        {
+            const int Colors = 32, LongSideMin = 1000, LongSideMax = 2000;
+            using var image = Load(input);
+            int outWidth = (int)image.Width, outHeight = (int)image.Height;
+            var longSide = Math.Max(outWidth, outHeight);
+            // Small pictures are enlarged first: the edge smoothing then gives a real curve instead of pixel steps.
+            if (longSide < LongSideMin)
+                image.Resize(new Percentage(100.0 * Math.Min(LongSideMin / (double)longSide, 8)));
+            else if (longSide > LongSideMax)
+                image.Resize(new Percentage(100.0 * LongSideMax / longSide));
+            int width = (int)image.Width, height = (int)image.Height;
+            ct.ThrowIfCancellationRequested();
+
+            using var pixels = image.GetPixels();
+            var original = pixels.ToByteArray(PixelMapping.RGBA)!;
+            using var flat = (MagickImage)image.Clone();
+            // Colours under transparency are arbitrary and must not take up a place in the palette.
+            flat.BackgroundColor = MagickColors.White;
+            flat.Alpha(AlphaAction.Remove);
+            flat.Quantize(new QuantizeSettings { Colors = Colors, ColorSpace = ColorSpace.sRGB, DitherMethod = DitherMethod.No });
+            using var flatPixels = flat.GetPixels();
+            var reduced = flatPixels.ToByteArray(PixelMapping.RGBA)!;
+            for (var i = 3; i < reduced.Length; i += 4)
+                reduced[i] = original[i];
+            File.WriteAllText(output, ImageTracer.Trace(reduced, width, height, outWidth, outHeight, ct), new System.Text.UTF8Encoding(false));
+        }, ct);
+
     public static Task CompressAsync(string input, string output, int quality, CancellationToken ct) =>
         Task.Run(() =>
         {

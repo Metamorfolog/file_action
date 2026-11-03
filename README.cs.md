@@ -49,7 +49,7 @@ Průběh převodu se ukazuje v rohu obrazovky. Odtud jde výsledek otevřít, uk
 
 | Typ | Vstup | Výstup |
 |---|---|---|
-| Obrázky | JPG, PNG, WebP, HEIC, TIFF, AVIF, BMP, GIF, ICO, SVG | JPG, PNG, WebP, AVIF, TIFF, ICO, PDF (GIF → MP4/WebM) |
+| Obrázky | JPG, PNG, WebP, HEIC, TIFF, AVIF, BMP, GIF, ICO, SVG | JPG, PNG, WebP, AVIF, TIFF, ICO, PDF, SVG (skutečné vektory, nejlépe pro loga a kresby) (GIF → MP4/WebM) |
 | Audio | MP3, M4A, AAC, WAV, FLAC, OGG, Opus, AIFF, WMA | MP3, M4A, WAV, FLAC, OGG, Opus, AIFF |
 | Video | MP4, MOV, MKV, WebM, AVI, WMV, FLV, MPG, 3GP, TS | MP4, MOV, MKV, WebM, GIF, MP3 |
 | PDF | PDF | DOCX, XLSX (tabulky), JPG, PNG (všechny strany, 300 DPI), PPTX, TXT, MD, HTML, EPUB |
